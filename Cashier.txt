@@ -1,0 +1,21 @@
+
+public class Cashiers {
+	private String casPass;
+	private int casID;
+	Cashiers(int casID, String casPass){
+		this.casID = casID;
+		this.casPass = casPass;
+	}
+	public int getCasID() {
+		return this.casID;
+	}
+	public void setCasID(int casID) {
+		this.casID = casID;
+	}
+	public String getCasPass() {
+		return this.casPass;
+	}
+	public void setCasPass(String casPass) {
+		this.casPass = casPass;
+	}
+}

@@ -1,0 +1,48 @@
+
+public class Purchase_Invoicebill {
+	private static int invoiceID;
+	private static int totalAmount;
+	private static int paidAmount;
+	private static int Balance;
+	private static String purchaseDate;
+	Purchase_Invoicebill(int invoiceID, String purchaseDate, int totalAmount, int paidAmount, int Balance){
+		Purchase_Invoicebill.invoiceID = invoiceID;
+		Purchase_Invoicebill.purchaseDate = purchaseDate;
+		Purchase_Invoicebill.totalAmount = totalAmount;
+		Purchase_Invoicebill.paidAmount = paidAmount;
+		Purchase_Invoicebill.Balance = Balance;
+	}
+	public static int getInvoiceID() {
+		return invoiceID;
+	}
+	public void setInvoiceID(int invoiceID) {
+		Purchase_Invoicebill.invoiceID = invoiceID;
+	}
+	public static String getPurchaseDate() {
+		return purchaseDate;
+	}
+	public void setPurchaseDate(String purchaseDate) {
+		Purchase_Invoicebill.purchaseDate = purchaseDate;
+	}
+	public static int getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(int totalAmount) {
+		Purchase_Invoicebill.totalAmount = totalAmount;
+	}
+	public static int getPaidAmount() {
+		return paidAmount;
+	}
+	public void setPaidAmount(int paidAmount) {
+		Purchase_Invoicebill.paidAmount = paidAmount;
+	}
+	public static int getBalance() {
+		return Balance;
+	}
+	public void setBalance(int Balance) {
+		Purchase_Invoicebill.Balance = Balance;
+	}
+	public String getInvoiceDetails() {
+		return invoiceID + "" + purchaseDate + "" + totalAmount + "" + paidAmount + "" + Balance;
+	}
+}
