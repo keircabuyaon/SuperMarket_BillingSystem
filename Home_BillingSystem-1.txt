@@ -1,0 +1,398 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+public class Home_BillingSystem {
+	public static List<Products> products = new ArrayList<>();
+	public static List<Cashiers> cashiers = new ArrayList<>();
+	public static Scanner sc = new Scanner(System.in);
+	public static boolean status = true;
+	public static String caspass, custumerName;
+	public static int choose, attempt = 3, id, casid, quanty;
+	public static double total, pay, totalPrice, limit, price;
+	public static void main(String[] args) {
+		Home_BillingSystem home = new Home_BillingSystem();
+		home.OUTPUT();
+	}
+	private void addProducts(Products product) {
+		System.out.println("PRODUCT HAS BEEN ADDED.");
+		products.add(product);
+	}
+	private void addCashiers(Cashiers cashier) {
+		System.out.println("CASHIER HAS BEEN ADDED.");
+		cashiers.add(cashier);
+	}
+	// OUTPUT CODE
+	private void OUTPUT() {
+		status = true;
+		while(status) {
+			System.out.println("============================================================");
+			System.out.println(" \t\tSUPER MARKET BILLING SYSTEM");
+			System.out.println("============================================================");
+			System.out.println("1. ADMIN");
+			System.out.println("2. CASHIER");
+			choose = sc.nextInt();
+			
+			switch(choose) {
+			case 1:
+				ADMIN_LOGIN();
+				status = true;
+				break;
+			case 2:
+				CASHIER_LOGIN();
+				status = true;
+				break;
+				default:
+					System.out.println("Invalid Keyword Please try again.");
+					status = true;
+					break;
+			}
+		}
+	}
+	private void ADMIN_LOGIN() {
+		while(attempt < 4) {
+			System.out.println();
+			System.out.println();
+			System.out.println("============================================================");
+			System.out.println(" \t\tSUPER MARKET BILLING SYSTEM");
+			System.out.println("============================================================");
+			if(attempt != 0) {
+				System.out.println("username: ");
+				String user = sc.next();
+				System.out.println("password: ");
+				String pass = sc.next();
+				if(user.equals("admin") && pass.equals("1234")) {
+					ADMIN_DASHBOARD();
+					status = true;
+				}else{
+					System.out.println("Incorrect user and pass.");
+					System.out.println("Login attempt: " + attempt);
+					attempt--;
+					status = true;
+				}
+			}else{
+				System.out.println("Max");
+				System.exit(0);
+			}
+		}
+	}
+	private void ADMIN_DASHBOARD() {
+		status = true;
+		while(status) {
+			System.out.println("============================================================");
+			System.out.println(" \t\tSUPER MARKET BILLING SYSTEM");
+			System.out.println("============================================================");
+			System.out.println("1. ADD PRODUCT");
+			System.out.println("2. ADD CASHIER");
+			System.out.println("3. SEARCH PRODUCT");
+			System.out.println("4. SEARCH CASHIER");
+			System.out.println("5. UPDATE PRODUCT");
+			System.out.println("6. UPDATE CASHIER");
+			System.out.println("7. REMOVE PRODUCT");
+			System.out.println("8. REMOVE CASHIER");
+			System.out.println("9. SHOW ACCOUNT DETAILS");
+			System.out.println("10. LOGOUT");
+			choose = sc.nextInt();
+			
+			switch(choose) {
+			case 1:
+				addProducts(inputProduct());
+				status = true;
+				break;
+			case 2:
+				addCashiers(inputCashier());
+				status = true;
+				break;
+			case 3:
+				SEARCHPRODUCT();
+				status = true;
+				break;
+			case 4:
+				SEARCHCASHIER();
+				status = true;
+				break;
+			case 5:
+				UPDATEPRODUCT();
+				status = true;
+				break;
+			case 6:
+				UPDATECASHIER();
+				status = true;
+				break;
+			case 7:
+				status = true;
+				break;
+			case 8:
+				CASHIERREMOVES(casid);
+				status = true;
+				break;
+			case 9:
+				SHOWCASHIERDETAILS();
+				status = true;
+				break;
+			case 10:
+				OUTPUT();
+				status = true;
+				break;
+			}
+		}
+	}
+	// CASHIER LOGIN
+	private void CASHIER_LOGIN() {
+		while(attempt < 4) {
+			System.out.println("============================================================");
+			System.out.println(" \t\tSUPER MARKET BILLING SYSTEM");
+			System.out.println("============================================================");
+			if(attempt != 0) {
+				System.out.println("Cashier ID: ");
+				int user = sc.nextInt();
+				System.out.println("Password: ");
+				String pass = sc.next();
+				if(user == casid && pass.equals(caspass)) {
+					CASHIER_DASHBOARD();
+					status = true;
+				}else{
+					System.out.println("Incorrect user and pass.");
+					System.out.println("Login attempt: " + attempt);
+					attempt--;
+					status = true;
+				}
+			}else{
+				System.out.println("Max");
+				break;
+			}
+		}
+	}
+	private void CASHIER_DASHBOARD() {
+		status = true;
+		while(status) {
+			System.out.println();
+			System.out.println();
+			System.out.println("============================================================");
+			System.out.println(" \t\tSUPER MARKET BILLING SYSTEM");
+			System.out.println("============================================================");
+			System.out.println("1. SALE PRODUCT");
+			System.out.println("2. SHOW PRODUCT DETAILS");
+			System.out.println("3. INVOICE/RECEIPT");
+			System.out.println("3. LOGOUT");
+			choose = sc.nextInt();
+			
+			switch(choose) {
+			case 1:
+				SHOWPRODUCTLIST();
+				status = true;
+				break;
+			case 2:
+				SHOWPRODUCTS();
+				status = true;
+				break;
+			case 3:
+				SHOWINVOICE();
+				status = true;
+				break;
+			case 4:
+				OUTPUT();
+				status = true;
+				break;
+			}
+		}
+	}
+	private Cashiers inputCashier() {
+		System.out.println("Enter Cashier ID: ");
+		casid = sc.nextInt();
+		System.out.println("Enter your password: ");
+		caspass = sc.next();
+		
+		Cashiers cashier = new Cashiers(casid, caspass);
+		return cashier;
+	}
+	private Products inputProduct() {
+		System.out.println("Enter Proudct ID: ");
+		id = sc.nextInt();
+		System.out.println("Enter Product Name: ");
+		String prodname = sc.next();
+		System.out.println("Enter Product Category: ");
+		String prodcategory = sc.next();
+		System.out.println("Enter Product Quantity: ");
+		int quantity = sc.nextInt();
+		
+		Products product = new Products(id, prodname, prodcategory, quantity);
+		return product;
+	}
+	private void SEARCHCASHIER() {
+		System.out.println("Enter Cashier ID: ");
+		casid = sc.nextInt();
+		
+		System.out.println("============================================================");
+		System.out.println("\tCASHIER ID \t\t\tCASHIER PASS");
+		System.out.println("============================================================");
+		for(Cashiers cashier : cashiers) {
+			System.out.println("\t\t" + cashier.getCasID() + "\t\t\t\t" + cashier.getCasPass());
+		}
+	}
+	private void SEARCHPRODUCT() {
+		System.out.println("Enter Product ID: ");
+		id = sc.nextInt();
+		
+		System.out.println("========================================================================");
+		System.out.println("\tPRODUCT ID \tPRODUCT NAME \t\tPRODUCT CATEGORY");
+		System.out.println("========================================================================");
+		for(Products product : products) {
+			System.out.println("\t" + product.getProdID() + "\t\t\t" + product.getProdName() + "\t\t\t" + product.getProdCategory());
+		}
+	}
+	private void UPDATECASHIER() {
+		status = false;
+		System.out.println("Enter employee ID to update: ");
+		id = sc.nextInt();
+		System.out.println("-----------------------------");
+		ListIterator<Cashiers> li = cashiers.listIterator();
+		
+		while(li.hasNext()) {
+			Cashiers e = li.next();
+			if(e.getCasID() == id) {
+				
+				System.out.println("Enter Cashier ID: ");
+				id = sc.nextInt();
+				
+				System.out.println("Enter Cashier Name: ");
+				String cashName = sc.next();
+				
+				li.set(new Cashiers(id, cashName));
+				
+				status = true;
+			}
+		}
+		if(!status) {
+			System.out.println("Record not found");
+		}else {
+			System.out.println("Record has been updated");
+		}
+	}
+	private void SHOWCASHIERDETAILS() {
+		System.out.println("============================================================");
+		System.out.println("\tCASHIER ID \t\t\tCASHIER PASS");
+		System.out.println("============================================================");
+		for(Cashiers cashier : cashiers) {
+			System.out.println("\t\t" + cashier.getCasID() + "\t\t\t\t" + cashier.getCasPass());
+		}
+	}
+	private void CASHIERREMOVES(int casid) {
+		System.out.println("Enter Cashier ID: ");
+		casid = sc.nextInt();
+		
+		for(Cashiers cashier : cashiers) {
+			try {
+				if(cashier.getCasID() == casid) {
+					cashiers.remove(cashier);
+					System.out.println("CASHIER ACCOUNT HAS BEEN DELETED.");
+				}
+			}catch(Exception e) {
+				System.out.println("Get error");
+			}
+		}
+	 }
+	private void UPDATEPRODUCT() {
+		status = false;
+		System.out.println("Enter employee ID to update: ");
+		id = sc.nextInt();
+		System.out.println("-----------------------------");
+		ListIterator<Products> li = products.listIterator();
+		
+		while(li.hasNext()) {
+			Products e = li.next();
+			if(e.getProdID() == id) {
+				
+				System.out.println("Enter Prodcut ID: ");
+				id = sc.nextInt();
+				
+				System.out.println("Enter Product Name: ");
+				String prodn = sc.next();
+				
+				System.out.println("Enter Product Category: ");
+				String prodc = sc.next();
+				
+				System.out.println("Enter Product Quantity: ");
+				int prodq = sc.nextInt();
+				
+				li.set(new Products(id, prodn, prodc, prodq));
+				
+				status = true;
+			}
+		}
+		if(!status) {
+			System.out.println("Record not found");
+		}else {
+			System.out.println("Record has been updated");
+		}
+	}
+	// SHOW PRODUCTS LIST
+	private void SHOWPRODUCTLIST() {
+		System.out.println("========================================================================");
+		System.out.println("\tPRODUCT ID \tPRODUCT NAME \t\tPRODUCT CATEGORY");
+		System.out.println("========================================================================");
+		for(Products product : products) {
+			System.out.println("\t" + product.getProdID() + "\t\t\t" + product.getProdName() + "\t\t\t" + product.getProdCategory());
+		}
+		for(Products product : products) {
+			id = sc.nextInt();
+			if(product.getProdID() == id) {
+				System.out.println("Enter Costumer name");
+				custumerName = sc.next();
+				System.out.println("Enter Product Quantity: ");
+				quanty = sc.nextInt();
+				System.out.println("Enter Product Price: ");
+				price = sc.nextDouble();
+				totalPrice = total + (price * quanty);
+				if(quanty < limit) {
+					System.out.println("Not enought Stock");
+					status = false;
+				}else {
+					System.out.println("Enter payment: ");
+					pay = sc.nextDouble();
+					
+					if(pay < totalPrice) {
+						System.out.println("Not enough stock");
+					}else {
+						System.out.println("TOTAL PRICE:$"+ totalPrice);  
+						total = pay - totalPrice;
+						System.out.println("TOTAL CHANGE IS :$"+ total);
+						status=true;
+					}
+				}
+			}
+			System.out.println("Do you want to transact another? [Y/N]");
+			String again = sc.next();
+			
+			if(again.equals("y") && again.equals("Y")) {
+				SHOWPRODUCTLIST();
+				status = true;
+			}else {
+				System.out.println("Thank you for shopping shoppee.");
+				SHOWINVOICE();
+				status = true;
+			}
+		}
+	}
+	private void SHOWINVOICE() {
+		System.out.println("============================================================");
+		System.out.println(" \t\tSUPER MARKET BILLING SYSTEM");
+		System.out.println("============================================================");
+		System.out.println("Customer Name: " + custumerName);
+		System.out.println("Product Quantity: " + quanty);
+		System.out.println("Product Price: " + price);
+		System.out.println("Total Price: " + totalPrice);
+	}
+	// SHOW PRODUCT DETAILS
+	private void SHOWPRODUCTS() {
+		System.out.println("Enter Product ID: ");
+		id = sc.nextInt();
+		
+		System.out.println("========================================================================");
+		System.out.println("\tPRODUCT ID \tPRODUCT NAME \t\tPRODUCT CATEGORY");
+		System.out.println("========================================================================");
+		for(Products product : products) {
+			System.out.println("\t" + product.getProdID() + "\t\t\t" + product.getProdName() + "\t\t\t" + product.getProdCategory());
+		}
+	}
+}
